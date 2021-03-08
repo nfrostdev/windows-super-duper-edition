@@ -1,18 +1,14 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    Windows SUPER DUPER EDITION!
+    <taskbar/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Taskbar from "@/components/Taskbar/Taskbar";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+  components: {Taskbar}
 }
 </script>
