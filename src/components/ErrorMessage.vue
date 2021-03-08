@@ -25,8 +25,14 @@ export default {
   props: {
     text: String
   },
+  methods: {
+    centerMessagePosition() {
+      this.$el.style.left = (window.innerWidth / 2) - (this.$el.offsetWidth / 2) + 'px';
+      this.$el.style.top = (window.innerHeight / 2) - (this.$el.offsetHeight / 2) + 'px';
+    }
+  },
   mounted() {
-
+    this.centerMessagePosition();
   }
 }
 </script>
