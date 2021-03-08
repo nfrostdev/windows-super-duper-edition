@@ -85,7 +85,7 @@ export default {
   }
 
   &__bottom {
-    @apply bg-gray-200 flex justify-end items-center border-t border-gray-400;
+    @apply bg-gray-200 flex justify-end items-center border-t border-gray-400 p-3;
   }
 }
 </style>
