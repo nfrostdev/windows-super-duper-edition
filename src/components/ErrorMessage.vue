@@ -37,14 +37,14 @@ export default {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     centerMessagePosition() {
-      this.$el.style.left = (window.innerWidth / 2) - (this.$el.offsetWidth / 2) + 'px';
-      this.$el.style.top = (window.innerHeight / 2) - (this.$el.offsetHeight / 2) + 'px';
+      this.$el.style.left = (window.outerWidth / 2) - (this.$el.outerWidth / 2) + 'px';
+      this.$el.style.top = (window.outerHeight / 2) - (this.$el.outerHeight / 2) + 'px';
     },
     randomizeMessagePosition() {
-      const halfElWidth = this.$el.offsetWidth / 2;
-      const halfElHeight = this.$el.offsetHeight / 2;
-      this.$el.style.left = this.getRandomInt(halfElWidth, window.innerWidth - halfElWidth) - halfElWidth + 'px';
-      this.$el.style.top = this.getRandomInt(halfElHeight, window.innerHeight - halfElHeight) - halfElHeight + 'px';
+      const elementWidth = 384;
+      const elementHeight = 256;
+      this.$el.style.left = this.getRandomInt(96, window.outerWidth - elementWidth) - 48 + 'px';
+      this.$el.style.top = this.getRandomInt(96, window.outerHeight - elementHeight) - 48 + 'px';
     },
     close() {
       this.$el.remove();
@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss">
 .error-message {
-  @apply fixed flex flex-col bg-white shadow-md border border-gray-400 z-50;
+  @apply fixed flex flex-col w-96 bg-white shadow-md border border-gray-400 z-50;
 
   &__top {
     @apply flex justify-between items-center text-xs leading-none;
@@ -77,7 +77,7 @@ export default {
   }
 
   &__content {
-    @apply flex-grow flex justify-center items-center text-sm p-3;
+    @apply flex-grow flex justify-start items-center text-sm p-3;
   }
 
   &__icon {

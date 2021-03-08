@@ -1,8 +1,8 @@
 <template>
   <div class="window">
     <router-view/>
-    <error-message content="The remote procedure call failed." />
-    <img class="window__background" src="./assets/images/background.jpg" aria-hidden="true" alt="Windows 10 Background"/>
+    <img class="window__background" src="./assets/images/background.jpg" aria-hidden="true"
+         alt="Windows 10 Background"/>
   </div>
 </template>
 
@@ -19,8 +19,5 @@
 }
 </style>
 <script>
-import ErrorMessage from "@/components/ErrorMessage";
-export default {
-  components: {ErrorMessage}
-}
+export default {}
 </script>
