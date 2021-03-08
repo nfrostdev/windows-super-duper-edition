@@ -1,21 +1,26 @@
 <template>
   <div class="window">
     <router-view/>
-    <img class="window__background" src="./assets/images/background.jpg" aria-hidden="true"/>
+    <error-message text="This is a sample error." />
+    <img class="window__background" src="./assets/images/background.jpg" aria-hidden="true" alt="Windows 10 Background"/>
   </div>
 </template>
 
 <style lang="scss">
-* {
-  @apply z-10;
-}
-
 .window {
   font-family: "Segoe UI", sans-serif;
   @apply fixed top-0 right-0 bottom-0 left-0;
+  user-select: none;
 
   &__background {
-    @apply w-full h-full object-cover z-0 fixed top-0 right-0 bottom-0 left-0;
+    @apply w-full h-full object-cover fixed top-0 right-0 bottom-0 left-0;
+    z-index: -1;
   }
 }
 </style>
+<script>
+import ErrorMessage from "@/components/ErrorMessage";
+export default {
+  components: {ErrorMessage}
+}
+</script>
