@@ -8,7 +8,10 @@
     </div>
 
     <div class="error-message__content">
-      {{ text }}
+      <div class="error-message__icon">
+        <font-awesome-icon icon="times"/>
+      </div>
+      <div>{{ content }}</div>
     </div>
 
     <div class="error-message__bottom">
@@ -23,7 +26,7 @@ import WindowsButton from "@/components/WindowsButton";
 export default {
   components: {WindowsButton},
   props: {
-    text: String
+    content: String
   },
   methods: {
     getRandomInt(min, max) {
@@ -50,7 +53,7 @@ export default {
 
 <style lang="scss">
 .error-message {
-  @apply fixed flex flex-col w-72 h-36 bg-white shadow-md border border-gray-400 z-50;
+  @apply fixed flex flex-col bg-white shadow-md border border-gray-400 z-50;
 
   &__top {
     @apply flex justify-between items-center text-xs leading-none;
@@ -69,7 +72,11 @@ export default {
   }
 
   &__content {
-    @apply flex-grow;
+    @apply flex-grow flex justify-center items-center text-sm p-3;
+  }
+
+  &__icon {
+    @apply text-2xl flex justify-center items-center bg-red-500 border border-red-700 text-white rounded-full w-10 h-10 mr-3;
   }
 
   &__bottom {

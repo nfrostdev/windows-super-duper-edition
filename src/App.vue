@@ -1,7 +1,7 @@
 <template>
   <div class="window">
     <router-view/>
-    <error-message text="This is a sample error." />
+    <error-message content="The remote procedure call failed." />
     <img class="window__background" src="./assets/images/background.jpg" aria-hidden="true" alt="Windows 10 Background"/>
   </div>
 </template>
