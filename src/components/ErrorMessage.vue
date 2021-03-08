@@ -2,7 +2,7 @@
   <div class="error-message">
     <div class="error-message__top">
       <div class="error-message__title">Error!</div>
-      <button class="error-message__close">
+      <button class="error-message__close" @click="close">
         <font-awesome-icon icon="times"/>
       </button>
     </div>
@@ -15,7 +15,9 @@
     </div>
 
     <div class="error-message__bottom">
-      <windows-button text="OK"/>
+      <div @click="close">
+        <windows-button text="OK"/>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +45,9 @@ export default {
       const halfElHeight = this.$el.offsetHeight / 2;
       this.$el.style.left = this.getRandomInt(halfElWidth, window.innerWidth - halfElWidth) - halfElWidth + 'px';
       this.$el.style.top = this.getRandomInt(halfElHeight, window.innerHeight - halfElHeight) - halfElHeight + 'px';
+    },
+    close() {
+      this.$el.remove();
     }
   },
   mounted() {
@@ -64,7 +69,7 @@ export default {
   }
 
   &__close {
-    @apply flex justify-center items-center h-8 w-8 text-gray-500 mb-auto transition duration-200 ease-in-out;
+    @apply flex justify-center items-center h-8 w-8 text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
 
     &:hover, &:focus {
       @apply outline-none bg-red-600 text-black;

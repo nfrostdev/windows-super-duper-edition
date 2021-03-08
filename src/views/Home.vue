@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    Windows SUPER DUPER EDITION!
     <taskbar/>
   </div>
 </template>
