@@ -26,13 +26,24 @@ export default {
     text: String
   },
   methods: {
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
     centerMessagePosition() {
       this.$el.style.left = (window.innerWidth / 2) - (this.$el.offsetWidth / 2) + 'px';
       this.$el.style.top = (window.innerHeight / 2) - (this.$el.offsetHeight / 2) + 'px';
+    },
+    randomizeMessagePosition() {
+      const halfElWidth = this.$el.offsetWidth / 2;
+      const halfElHeight = this.$el.offsetHeight / 2;
+      this.$el.style.left = this.getRandomInt(halfElWidth, window.innerWidth - halfElWidth) - halfElWidth + 'px';
+      this.$el.style.top = this.getRandomInt(halfElHeight, window.innerHeight - halfElHeight) - halfElHeight + 'px';
     }
   },
   mounted() {
-    this.centerMessagePosition();
+    this.randomizeMessagePosition();
   }
 }
 </script>
