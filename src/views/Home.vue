@@ -23,13 +23,13 @@ export default {
         const errorMessage = Vue.extend(ErrorMessage);
         const messageStart = 'Error detected in ';
         const paths = [
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.25.34.606.winsat.etl',
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.25.37.806 Cpu.Assessment (Initial).WinSAT',
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.25.37.806 Disk.Assessment (Initial).WinSAT',
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.25.37.806 DWM.Assessment (Initial).WinSAT',
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.25.37.806 Graphics3D.Assessment (Initial).WinSAT',
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.25.37.806 Mem.Assessment (Initial).WinSAT',
-          'C:/Windows/Performance/WinSAT/DataStore/2021-02-05 17.27.16.605 Formal.Assessment (Initial).WinSAT',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.34.606.winsat.etl',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.37.806 Cpu.Assessment (Initial).WinSAT',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.37.806 Disk.Assessment (Initial).WinSAT',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.37.806 DWM.Assessment (Initial).WinSAT',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.37.806 Graphics3D.Assessment (Initial).WinSAT',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.37.806 Mem.Assessment (Initial).WinSAT',
+          'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.27.16.605 Formal.Assessment (Initial).WinSAT',
           'C:/Windows/System32/Boot/winload.efi',
           'C:/Windows/System32/Boot/winload.exe',
           'C:/Windows/System32/Boot/winresume.efi',

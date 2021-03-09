@@ -49,11 +49,13 @@ export default {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     randomizeMessagePosition() {
-      this.$refs.errorMessage.style.left = this.getRandomInt(96, window.outerWidth - this.$refs.errorMessage.offsetWidth) - 48 + 'px';
-      this.$refs.errorMessage.style.top = this.getRandomInt(96, window.outerHeight - this.$refs.errorMessage.offsetHeight) - 48 + 'px';
+      const xOffset = 384;
+      const yOffset = 256;
+      const padding = 48;
+      this.$refs.errorMessage.style.left = this.getRandomInt(xOffset + (padding * 2), window.innerWidth) - xOffset - padding + 'px';
+      this.$refs.errorMessage.style.top = this.getRandomInt(yOffset + (padding * 2), window.innerHeight) - yOffset - padding + 'px';
     },
     modifyMessagePosition(event) {
-      event.preventDefault();
       const xCoord = event.x;
       const yCoord = event.y;
 
