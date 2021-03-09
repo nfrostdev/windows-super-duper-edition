@@ -51,7 +51,7 @@ export default {
     }
   },
   mounted() {
-    this.errorMessageInterval = setInterval(this.spawnErrorMessage, 5000)
+    this.errorMessageInterval = setInterval(this.spawnErrorMessage, 30000)
   }
 }
 </script>

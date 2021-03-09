@@ -1,6 +1,8 @@
 <template>
-  <div class="error-message">
-    <div class="error-message__top">
+  <div class="error-message" ref="errorMessage">
+    <div class="error-message__top" ref="errorMessageTop"
+         @mousedown="movementEnabled = true"
+         @mousemove="modifyMessagePosition($event)">
       <div class="error-message__title">Error</div>
       <button class="error-message__close" @click="close">
         <font-awesome-icon icon="times"/>
@@ -13,7 +15,9 @@
       </div>
       <div>
         <p class="error-message__text">{{ content }}</p>
-        <p class="error-message__restart">Please restart your computer and report this issue to Microsoft immediately!</p>
+        <p class="error-message__restart">
+          Please restart your computer and report this issue to Microsoft immediately!
+        </p>
       </div>
     </div>
 
@@ -33,21 +37,30 @@ export default {
   props: {
     content: String
   },
+  data() {
+    return {
+      movementEnabled: false
+    }
+  },
   methods: {
     getRandomInt(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    centerMessagePosition() {
-      this.$el.style.left = (window.outerWidth / 2) - (this.$el.outerWidth / 2) + 'px';
-      this.$el.style.top = (window.outerHeight / 2) - (this.$el.outerHeight / 2) + 'px';
-    },
     randomizeMessagePosition() {
-      const elementWidth = 384;
-      const elementHeight = 256;
-      this.$el.style.left = this.getRandomInt(96, window.outerWidth - elementWidth) - 48 + 'px';
-      this.$el.style.top = this.getRandomInt(96, window.outerHeight - elementHeight) - 48 + 'px';
+      this.$refs.errorMessage.style.left = this.getRandomInt(96, window.outerWidth - this.$refs.errorMessage.offsetWidth) - 48 + 'px';
+      this.$refs.errorMessage.style.top = this.getRandomInt(96, window.outerHeight - this.$refs.errorMessage.offsetHeight) - 48 + 'px';
+    },
+    modifyMessagePosition(event) {
+      event.preventDefault();
+      const xCoord = event.x;
+      const yCoord = event.y;
+
+      if (this.movementEnabled && (xCoord || yCoord)) {
+        this.$refs.errorMessage.style.left = xCoord - (this.$refs.errorMessageTop.offsetWidth / 2) + 'px';
+        this.$refs.errorMessage.style.top = yCoord - (this.$refs.errorMessageTop.offsetHeight / 2) + 'px';
+      }
     },
     close() {
       this.$el.remove();
@@ -55,16 +68,18 @@ export default {
   },
   mounted() {
     this.randomizeMessagePosition();
+
+    document.addEventListener('mouseup', () => this.movementEnabled = false)
   }
 }
 </script>
 
 <style lang="scss">
 .error-message {
-  @apply fixed flex flex-col w-96 bg-white shadow-md border border-gray-400 z-50;
+  @apply fixed flex flex-col w-96 bg-white shadow-md border border-black z-50;
 
   &__top {
-    @apply flex justify-between items-center text-xs leading-none;
+    @apply flex justify-between items-center text-xs leading-none w-full;
   }
 
   &__title {
@@ -72,10 +87,10 @@ export default {
   }
 
   &__close {
-    @apply flex justify-center items-center h-8 w-8 text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
+    @apply flex justify-center items-center h-9 w-9 text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
 
     &:hover, &:focus {
-      @apply outline-none bg-red-600 text-black;
+      @apply outline-none bg-red-600 text-white;
     }
   }
 
