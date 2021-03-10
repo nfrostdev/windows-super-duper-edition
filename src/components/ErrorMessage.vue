@@ -1,5 +1,5 @@
 <template>
-  <window title="Error!" :has-actions="true" :is-randomly-positioned="true">
+  <window title="Error!" :has-actions="true" :is-randomly-positioned="true" :has-size-controls="false">
     <div class="error-message__icon">
       <font-awesome-icon icon="times"/>
     </div>

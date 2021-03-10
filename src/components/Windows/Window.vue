@@ -1,12 +1,27 @@
 <template>
-  <div class="window" ref="window">
+  <div class="window" ref="window"
+       @mousedown="focusWindow"
+       :class="{'window--regular': hasSizeControls}">
     <div class="window__top" ref="windowTop"
          @mousedown="movementEnabled = true"
          @mousemove="modifyMessagePosition($event)">
       <div class="window__title">{{ title }}</div>
-      <button class="window__close" @click="close">
-        <font-awesome-icon icon="times"/>
-      </button>
+      <div class="window__controls">
+        <div v-if="hasSizeControls" class="window__size-controls">
+          <button class="window__size-control" @click="close">
+            <font-awesome-icon icon="minus"/>
+          </button>
+          <button class="window__size-control">
+            <font-awesome-icon :icon="{prefix: 'far', iconName: 'square'}"/>
+          </button>
+          <button class="window__size-control window__close" @click="close">
+            <font-awesome-icon icon="times"/>
+          </button>
+        </div>
+        <button v-else class="window__size-control window__size-control--square window__close" @click="close">
+          <font-awesome-icon icon="times"/>
+        </button>
+      </div>
     </div>
 
     <div class="window__content">
@@ -77,11 +92,19 @@ export default {
     },
     close() {
       this.$el.remove();
+    },
+    focusWindow() {
+      let zIndex = 1;
+      document.querySelectorAll('.window').forEach(window => {
+        window.style.zIndex = zIndex;
+        zIndex++;
+      })
+      this.$refs.window.style.zIndex = zIndex;
     }
   },
   mounted() {
     document.addEventListener('mouseup', () => this.movementEnabled = false)
-    
+
     this.isRandomlyPositioned
         ? this.randomizeMessagePosition()
         : this.centerMessagePosition()
@@ -91,26 +114,57 @@ export default {
 
 <style lang="scss">
 .window {
-  @apply fixed flex top-auto right-auto bottom-auto left-auto flex-col w-96 bg-white shadow-md border border-black z-50;
+  @apply fixed flex top-auto right-auto bottom-auto left-auto flex-col bg-white shadow-md border border-black z-50 w-96;
+
+  &--regular {
+    min-width: 75%;
+    min-height: 75%;
+  }
 
   &__top {
-    @apply flex justify-between items-center text-xs leading-none w-full;
+    @apply flex justify-start items-start text-xs leading-none w-full;
   }
 
   &__title {
     @apply m-3;
   }
 
-  &__close {
-    @apply flex justify-center items-center h-9 w-9 text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
+  &__controls {
+    @apply flex justify-start items-start ml-auto;
+  }
 
-    &:hover, &:focus {
-      @apply outline-none bg-red-600 text-white;
+  &__size-control {
+    @apply flex justify-center w-12 h-8 items-center text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
+
+    &s {
+      @apply flex justify-start items-start;
+    }
+
+    &--square {
+      @apply h-9 w-9;
+    }
+
+    &:hover {
+      @apply bg-gray-300 text-black;
+    }
+
+    &:focus {
+      @apply outline-none;
+    }
+  }
+
+  &__close {
+    &:hover {
+      @apply bg-red-600 text-white;
+    }
+
+    &:focus {
+      @apply outline-none;
     }
   }
 
   &__content {
-    @apply flex-grow flex justify-start items-center text-sm p-3;
+    @apply flex-grow flex justify-start items-start text-sm p-3 border-t border-gray-300;
   }
 
   &__icon {
