@@ -6,24 +6,6 @@
     </window>
 
     <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
-    <error-message content="Test" />
   </div>
 </template>
 

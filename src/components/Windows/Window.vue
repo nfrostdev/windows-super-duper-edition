@@ -2,16 +2,17 @@
   <div class="window" ref="window"
        @mousedown="focusWindow"
        :class="{'window--regular': hasSizeControls}">
-    <div class="window__top" ref="windowTop"
-         @mousedown="movementEnabled = true"
-         @mousemove="modifyMessagePosition($event)">
-      <div class="window__title">{{ title }}</div>
+    <div class="window__top" ref="windowTop">
+      <div class="window__title"
+           @mousedown="movementEnabled = true"
+           @mousemove="modifyMessagePosition($event)">{{ title }}
+      </div>
       <div class="window__controls">
         <div v-if="hasSizeControls" class="window__size-controls">
           <button class="window__size-control" @click="close">
             <font-awesome-icon icon="minus"/>
           </button>
-          <button class="window__size-control">
+          <button class="window__size-control" @click="maximize">
             <font-awesome-icon :icon="{prefix: 'far', iconName: 'square'}"/>
           </button>
           <button class="window__size-control window__close" @click="close">
@@ -61,7 +62,12 @@ export default {
   },
   data() {
     return {
-      movementEnabled: false
+      movementEnabled: false,
+      isMaximized: false,
+      storedWidth: null,
+      storedHeight: null,
+      storedTop: null,
+      storedLeft: null
     }
   },
   methods: {
@@ -90,6 +96,27 @@ export default {
         this.$refs.window.style.top = yCoord - (this.$refs.windowTop.offsetHeight / 2) + 'px';
       }
     },
+    maximize() {
+      const component = this.$refs.window;
+      if (this.isMaximized) {
+        component.style.width = this.storedWidth;
+        component.style.height = this.storedHeight;
+        component.style.top = this.storedTop;
+        component.style.left = this.storedLeft;
+        this.isMaximized = false;
+      } else {
+        this.storedWidth = component.offsetWidth + 'px';
+        this.storedHeight = component.offsetHeight + 'px';
+        this.storedTop = component.style.top;
+        this.storedLeft = component.style.left;
+
+        component.style.width = '100%';
+        component.style.height = window.innerHeight - document.querySelector('.taskbar').offsetHeight + 'px';
+        component.style.top = 0;
+        component.style.left = 0;
+        this.isMaximized = true;
+      }
+    },
     close() {
       this.$el.remove();
     },
@@ -114,34 +141,34 @@ export default {
 
 <style lang="scss">
 .window {
-  @apply fixed flex top-auto right-auto bottom-auto left-auto flex-col bg-white shadow-md border border-black z-50 w-96;
+  @apply fixed flex flex-col bg-white shadow-md border border-black z-50 w-96;
 
   &--regular {
-    min-width: 75%;
-    min-height: 75%;
+    min-width: 25%;
+    min-height: 25%;
   }
 
   &__top {
-    @apply flex justify-start items-start text-xs leading-none w-full;
+    @apply flex justify-start items-start text-xs leading-none w-full h-8;
   }
 
   &__title {
-    @apply m-3;
+    @apply p-3 flex-grow;
   }
 
   &__controls {
-    @apply flex justify-start items-start ml-auto;
+    @apply flex justify-start items-start ml-auto h-full h-8;
   }
 
   &__size-control {
-    @apply flex justify-center w-12 h-8 items-center text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
+    @apply flex justify-center w-12 h-8 h-full items-center text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
 
     &s {
-      @apply flex justify-start items-start;
+      @apply flex justify-start items-start h-8;
     }
 
     &--square {
-      @apply h-9 w-9;
+      @apply w-8;
     }
 
     &:hover {
