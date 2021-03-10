@@ -13,6 +13,6 @@
 
 <style lang="scss">
   .windows-logo {
-    @apply h-4 w-4;
+    @apply h-4 w-4 pointer-events-none;
   }
 </style>
