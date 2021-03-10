@@ -1,0 +1,131 @@
+<template>
+  <div class="window" ref="window">
+    <div class="window__top" ref="windowTop"
+         @mousedown="movementEnabled = true"
+         @mousemove="modifyMessagePosition($event)">
+      <div class="window__title">{{ title }}</div>
+      <button class="window__close" @click="close">
+        <font-awesome-icon icon="times"/>
+      </button>
+    </div>
+
+    <div class="window__content">
+      <slot/>
+    </div>
+
+    <div v-if="hasActions" class="window__bottom">
+      <div @click="close">
+        <windows-button text="OK"/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import WindowsButton from "@/components/WindowsButton";
+
+export default {
+  components: {WindowsButton},
+  props: {
+    title: {
+      type: String,
+      default: 'New Window'
+    },
+    hasSizeControls: {
+      type: Boolean,
+      default: true
+    },
+    isRandomlyPositioned: {
+      type: Boolean,
+      default: false
+    },
+    hasActions: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      movementEnabled: false
+    }
+  },
+  methods: {
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    centerMessagePosition() {
+
+    },
+    randomizeMessagePosition() {
+      const xOffset = 384;
+      const yOffset = 256;
+      const padding = 48;
+      this.$refs.window.style.left = this.getRandomInt(xOffset + (padding * 2), window.innerWidth) - xOffset - padding + 'px';
+      this.$refs.window.style.top = this.getRandomInt(yOffset + (padding * 2), window.innerHeight) - yOffset - padding + 'px';
+    },
+    modifyMessagePosition(event) {
+      const xCoord = event.x;
+      const yCoord = event.y;
+
+      if (this.movementEnabled && (xCoord || yCoord)) {
+        this.$refs.window.style.left = xCoord - (this.$refs.windowTop.offsetWidth / 2) + 'px';
+        this.$refs.window.style.top = yCoord - (this.$refs.windowTop.offsetHeight / 2) + 'px';
+      }
+    },
+    close() {
+      this.$el.remove();
+    }
+  },
+  mounted() {
+    this.isRandomlyPositioned
+        ? this.randomizeMessagePosition()
+        : this.centerMessagePosition()
+
+    document.addEventListener('mouseup', () => this.movementEnabled = false)
+  }
+}
+</script>
+
+<style lang="scss">
+.window {
+  @apply fixed flex top-auto right-auto bottom-auto left-auto flex-col w-96 bg-white shadow-md border border-black z-50;
+
+  &__top {
+    @apply flex justify-between items-center text-xs leading-none w-full;
+  }
+
+  &__title {
+    @apply m-3;
+  }
+
+  &__close {
+    @apply flex justify-center items-center h-9 w-9 text-gray-500 mb-auto transition duration-200 ease-in-out cursor-default;
+
+    &:hover, &:focus {
+      @apply outline-none bg-red-600 text-white;
+    }
+  }
+
+  &__content {
+    @apply flex-grow flex justify-start items-center text-sm p-3;
+  }
+
+  &__icon {
+    @apply text-2xl flex justify-center items-center bg-red-500 border border-red-700 text-white rounded-full w-10 h-10 mr-3 flex-shrink-0;
+  }
+
+  &__text {
+    @apply break-all;
+  }
+
+  &__restart {
+    @apply mt-2;
+  }
+
+  &__bottom {
+    @apply bg-gray-200 flex justify-end items-center border-t border-gray-400 p-3;
+  }
+}
+</style>
