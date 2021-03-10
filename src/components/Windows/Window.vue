@@ -4,8 +4,8 @@
        :class="{'window--regular': hasSizeControls}">
     <div class="window__top" ref="windowTop">
       <div class="window__title"
-           @mousedown="movementEnabled = true"
-           @mousemove="modifyMessagePosition($event)">{{ title }}
+           ref="windowTitle"
+           @mousedown="enableMovement($event)">{{ title }}
       </div>
       <div class="window__controls">
         <div v-if="hasSizeControls" class="window__size-controls">
@@ -67,7 +67,8 @@ export default {
       storedWidth: null,
       storedHeight: null,
       storedTop: null,
-      storedLeft: null
+      storedLeft: null,
+      positionListener: null
     }
   },
   methods: {
@@ -75,26 +76,6 @@ export default {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min;
-    },
-    centerMessagePosition() {
-      this.$refs.window.style.left = (window.innerWidth / 2) - (this.$refs.window.offsetWidth / 2) + 'px';
-      this.$refs.window.style.top = (window.innerHeight / 2) - (this.$refs.window.offsetHeight / 2) + 'px';
-    },
-    randomizeMessagePosition() {
-      const xOffset = 384;
-      const yOffset = 256;
-      const padding = 48;
-      this.$refs.window.style.left = this.getRandomInt(xOffset + (padding * 2), window.innerWidth) - xOffset - padding + 'px';
-      this.$refs.window.style.top = this.getRandomInt(yOffset + (padding * 2), window.innerHeight) - yOffset - padding + 'px';
-    },
-    modifyMessagePosition(event) {
-      const xCoord = event.x;
-      const yCoord = event.y;
-
-      if (this.movementEnabled && (xCoord || yCoord)) {
-        this.$refs.window.style.left = xCoord - (this.$refs.windowTop.offsetWidth / 2) + 'px';
-        this.$refs.window.style.top = yCoord - (this.$refs.windowTop.offsetHeight / 2) + 'px';
-      }
     },
     maximize() {
       const component = this.$refs.window;
@@ -109,7 +90,6 @@ export default {
         this.storedHeight = component.offsetHeight + 'px';
         this.storedTop = component.style.top;
         this.storedLeft = component.style.left;
-
         component.style.width = '100%';
         component.style.height = window.innerHeight - document.querySelector('.taskbar').offsetHeight + 'px';
         component.style.top = 0;
@@ -119,6 +99,38 @@ export default {
     },
     close() {
       this.$el.remove();
+    },
+    enableMovement() {
+      this.movementEnabled = true;
+    },
+    disableMovement() {
+      this.movementEnabled = false;
+    },
+    modifyMessagePosition(event) {
+      if (this.movementEnabled) {
+        document.addEventListener('mouseup', this.disableMovement);
+        const component = this.$refs.window;
+        if (this.storedWidth && this.storedHeight) {
+          component.style.width = this.storedWidth;
+          component.style.height = this.storedHeight;
+        }
+        component.style.left = event.x - (this.$refs.windowTitle.offsetWidth / 2) + 'px';
+        component.style.top = event.y - (this.$refs.windowTitle.offsetHeight / 2) + 'px';
+        this.isMaximized = false;
+      }
+    },
+    centerMessagePosition() {
+      const component = this.$refs.window;
+      component.style.left = (window.innerWidth / 2) - (component.offsetWidth / 2) + 'px';
+      component.style.top = (window.innerHeight / 2) - (component.offsetHeight / 2) + 'px';
+    },
+    randomizeMessagePosition() {
+      const xOffset = 384;
+      const yOffset = 256;
+      const padding = 48;
+      const component = this.$refs.window;
+      component.style.left = this.getRandomInt(xOffset + (padding * 2), window.innerWidth) - xOffset - padding + 'px';
+      component.style.top = this.getRandomInt(yOffset + (padding * 2), window.innerHeight) - yOffset - padding + 'px';
     },
     focusWindow() {
       let zIndex = 1;
@@ -130,11 +142,10 @@ export default {
     }
   },
   mounted() {
-    document.addEventListener('mouseup', () => this.movementEnabled = false)
-
     this.isRandomlyPositioned
         ? this.randomizeMessagePosition()
         : this.centerMessagePosition()
+    document.addEventListener('mousemove', () => this.modifyMessagePosition(event))
   }
 }
 </script>
