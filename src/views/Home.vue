@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <taskbar/>
+    <window title="This is an example window."></window>
   </div>
 </template>
 
@@ -8,9 +9,10 @@
 import Vue from 'vue'
 import Taskbar from "@/components/Taskbar/Taskbar";
 import ErrorMessage from "@/components/ErrorMessage";
+import Window from "@/components/Windows/Window";
 
 export default {
-  components: {Taskbar},
+  components: {Window, Taskbar},
   data() {
     return {
       errorMessageInterval: null

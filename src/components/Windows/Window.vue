@@ -56,7 +56,8 @@ export default {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     centerMessagePosition() {
-
+      this.$refs.window.style.left = (window.innerWidth / 2) - (this.$refs.window.offsetWidth / 2) + 'px';
+      this.$refs.window.style.top = (window.innerHeight / 2) - (this.$refs.window.offsetHeight / 2) + 'px';
     },
     randomizeMessagePosition() {
       const xOffset = 384;
@@ -79,11 +80,11 @@ export default {
     }
   },
   mounted() {
+    document.addEventListener('mouseup', () => this.movementEnabled = false)
+    
     this.isRandomlyPositioned
         ? this.randomizeMessagePosition()
         : this.centerMessagePosition()
-
-    document.addEventListener('mouseup', () => this.movementEnabled = false)
   }
 }
 </script>
