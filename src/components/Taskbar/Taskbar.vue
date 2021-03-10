@@ -28,7 +28,7 @@ export default {
     this.updateInterval = setInterval(() => {
       const now = new Date();
       this.date = date.format(now, 'M/D/YYYY');
-      this.time = date.format(now, 'hh:mm A');
+      this.time = date.format(now, 'h:mm A');
     }, 1000);
   }
 }
