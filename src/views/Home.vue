@@ -5,15 +5,14 @@
       <div>This is example content.</div>
     </window>
 
-    <error-message content="Test" />
+    <error-message content="Test"/>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import Taskbar from "@/components/Taskbar/Taskbar";
-import ErrorMessage from "@/components/ErrorMessage";
-import Window from "@/components/Windows/Window";
+import Taskbar from "@/components/Taskbar/Taskbar"
+import ErrorMessage from "@/components/ErrorMessage"
+import Window from "@/components/Windows/Window"
 
 export default {
   components: {ErrorMessage, Window, Taskbar},
@@ -26,7 +25,6 @@ export default {
     spawnErrorMessage() {
       // Spawn an error message 25% of the time.
       if (Math.random() < 0.25) {
-        const errorMessage = Vue.extend(ErrorMessage);
         const messageStart = 'Error detected in ';
         const paths = [
           'C:/Windows/Performance/WinSAT/DataStore/2019-02-05 17.25.34.606.winsat.etl',
@@ -46,13 +44,8 @@ export default {
           'C:/Windows/System32/Boot/en-US/winresume.exe.mui',
         ];
         const messageEnd = ".";
-        const instance = new errorMessage({
-          propsData: {
-            content: messageStart + paths[Math.floor(Math.random() * paths.length)] + messageEnd
-          }
-        });
-        instance.$mount();
-        this.$el.appendChild(instance.$el);
+        const message = messageStart + paths[Math.floor(Math.random() * paths.length)] + messageEnd
+        this.$store.dispatch('spawnErrorMessage', {content: message, isRandomlyPositioned: true})
       }
     }
   },

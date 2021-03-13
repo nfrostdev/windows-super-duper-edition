@@ -1,5 +1,5 @@
 <template>
-  <div class="window" ref="window"
+  <div class="window sr-only" ref="window"
        @mousedown="focusWindow"
        :class="{'window--regular': hasSizeControls}">
     <div class="window__top" ref="windowTop">
@@ -39,6 +39,7 @@
 
 <script>
 import WindowsButton from "@/components/WindowsButton";
+import {v4} from 'uuid';
 
 export default {
   components: {WindowsButton},
@@ -68,7 +69,8 @@ export default {
       storedHeight: null,
       storedTop: null,
       storedLeft: null,
-      positionListener: null
+      positionListener: null,
+      uuid: null
     }
   },
   methods: {
@@ -121,8 +123,16 @@ export default {
     },
     centerMessagePosition() {
       const component = this.$refs.window;
-      component.style.left = (window.innerWidth / 2) - (component.offsetWidth / 2) + 'px';
-      component.style.top = (window.innerHeight / 2) - (component.offsetHeight / 2) + 'px';
+      if (component.offsetWidth > 0 && component.offsetHeight > 0) {
+        component.classList.remove('sr-only')
+        component.style.left = (window.innerWidth / 2) - (component.offsetWidth / 2) + 'px';
+        component.style.top = (window.innerHeight / 2) - (component.offsetHeight / 2) + 'px';
+      } else {
+        // There are times we can't calculate the position of the component's width or height because it hasn't been rendered in the DOM yet.
+        // I use tail recursion with a slight timeout here to evaluate if the component has drawn but visually hidden dimensions yet.
+        window.setTimeout(() => this.centerMessagePosition(), 1)
+      }
+
     },
     randomizeMessagePosition() {
       const xOffset = 384;
@@ -131,6 +141,7 @@ export default {
       const component = this.$refs.window;
       component.style.left = this.getRandomInt(xOffset + (padding * 2), window.innerWidth) - xOffset - padding + 'px';
       component.style.top = this.getRandomInt(yOffset + (padding * 2), window.innerHeight) - yOffset - padding + 'px';
+      component.classList.remove('sr-only')
     },
     focusWindow() {
       let zIndex = 1;
@@ -141,10 +152,14 @@ export default {
       this.$refs.window.style.zIndex = zIndex;
     }
   },
+  beforeMount() {
+    this.uuid = v4();
+  },
   mounted() {
     this.isRandomlyPositioned
         ? this.randomizeMessagePosition()
         : this.centerMessagePosition()
+    this.$refs.window.id = this.uuid;
     document.addEventListener('mousemove', () => this.modifyMessagePosition(event))
   }
 }

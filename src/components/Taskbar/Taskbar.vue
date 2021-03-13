@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="taskbar">
-      <button class="start-button" @click="toggleStartMenu" :class="{'start-button--active': menuOpened}">
+      <button class="start-button"
+              ref="startButton"
+              @click="toggleStartMenu"
+              :class="{'start-button--active': menuOpened}">
         <windows-logo/>
       </button>
 
@@ -12,7 +15,14 @@
     </div>
 
     <div v-if="menuOpened" class="start-menu">
-
+      <div class="start-menu__sidebar">
+        <button v-for="(sidebarButton, index) in sidebarButtons"
+                :key="index"
+                @click="dispatchErrorMessage"
+                class="start-menu__sidebar__button">
+          <font-awesome-icon :icon="sidebarButton"/>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -28,23 +38,23 @@ export default {
       updateInterval: null,
       date: null,
       time: null,
-      menuOpened: false
+      menuOpened: false,
+      sidebarButtons: [
+        'user-circle',
+        {prefix: 'far', iconName: 'file'},
+        {prefix: 'far', iconName: 'image'},
+        'cog',
+        'power-off'
+      ]
     }
   },
   methods: {
     toggleStartMenu() {
       this.menuOpened = !this.menuOpened;
     },
-    checkElementAndParentsForClass(el, className) {
-      if (el.classList && el.classList.contains(className)) {
-        return true;
-      } else {
-        if (el.parentNode && el.parentNode.classList) {
-          this.checkElementAndParentsForClass(el.parentNode, className)
-        } else {
-          return false;
-        }
-      }
+    dispatchErrorMessage() {
+      const message = 'An error has occurred while attempting to perform that action.';
+      this.$store.dispatch('spawnErrorMessage', {content: message, isRandomlyPositioned: false})
     }
   },
   mounted() {
@@ -55,8 +65,7 @@ export default {
     }, 1000);
 
     document.addEventListener('click', event => {
-      console.log(this.checkElementAndParentsForClass(event.target, 'taskbar'));
-      if (this.menuOpened && !this.checkElementAndParentsForClass(event.target, 'taskbar')) {
+      if (event.target !== document.querySelector('.start-button')) {
         this.menuOpened = false;
       }
     })
@@ -94,7 +103,23 @@ export default {
 }
 
 .start-menu {
-  @apply fixed flex bottom-0 left-0 mb-12 bg-gray-800 opacity-90 w-96;
+  @apply fixed flex bottom-0 left-0 mb-12 bg-gray-800 opacity-90 w-72;
   height: 32rem;
+
+  &__sidebar {
+    @apply flex flex-col justify-end text-white;
+
+    &__button {
+      @apply flex justify-center items-center w-12 h-12;
+
+      &:hover {
+        @apply bg-gray-700;
+      }
+
+      &:focus {
+        @apply outline-none;
+      }
+    }
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <window title="Error!" :has-actions="true" :is-randomly-positioned="true" :has-size-controls="false">
+  <window title="Error!" :has-actions="true" :is-randomly-positioned="isRandomlyPositioned" :has-size-controls="false">
     <div class="error-message__icon">
       <font-awesome-icon icon="times"/>
     </div>
@@ -18,7 +18,11 @@ import Window from "@/components/Windows/Window";
 export default {
   components: {Window},
   props: {
-    content: String
+    content: String,
+    isRandomlyPositioned: {
+      type: Boolean,
+      default: true
+    }
   }
 }
 </script>
@@ -30,7 +34,6 @@ export default {
   }
 
   &__text {
-    @apply break-all;
   }
 
   &__restart {
