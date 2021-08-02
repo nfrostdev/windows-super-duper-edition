@@ -1,21 +1,14 @@
 <template>
   <div class="home">
     <taskbar/>
-    <window title="This is an example window.">
-      <div>This is example content.</div>
-    </window>
-
-    <error-message content="Test"/>
   </div>
 </template>
 
 <script>
 import Taskbar from "@/components/Taskbar/Taskbar"
-import ErrorMessage from "@/components/ErrorMessage"
-import Window from "@/components/Windows/Window"
 
 export default {
-  components: {ErrorMessage, Window, Taskbar},
+  components: {Taskbar},
   data() {
     return {
       errorMessageInterval: null

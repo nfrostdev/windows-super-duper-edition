@@ -34,6 +34,7 @@ export default {
   }
 
   &__text {
+    @apply break-words mr-2;
   }
 
   &__restart {

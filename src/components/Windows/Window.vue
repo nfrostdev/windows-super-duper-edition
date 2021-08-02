@@ -149,7 +149,7 @@ export default {
         window.style.zIndex = zIndex;
         zIndex++;
       })
-      this.$refs.window.style.zIndex = zIndex;
+      this.$refs.window.style.zIndex = zIndex.toString();
     }
   },
   beforeMount() {
@@ -168,6 +168,7 @@ export default {
 <style lang="scss">
 .window {
   @apply fixed flex flex-col bg-white shadow-md border border-black z-50 w-96;
+  resize: both;
 
   &--regular {
     min-width: 25%;
