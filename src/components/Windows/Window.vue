@@ -167,7 +167,7 @@ export default {
 
 <style lang="scss">
 .window {
-  @apply fixed flex flex-col bg-white shadow-md border border-black z-50 w-96;
+  @apply fixed flex flex-col bg-white shadow-md border border-black z-50 w-96 select-none;
   resize: both;
 
   &--regular {
